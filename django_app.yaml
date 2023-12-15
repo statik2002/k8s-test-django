@@ -1,0 +1,46 @@
+apiVersion : apps/v1
+kind: Deployment
+metadata:
+  name: djangoapp-deployment
+  labels:
+    app   : django-application
+    owner : Aleksei_Ushakov
+spec:
+  selector:
+    matchLabels:
+      project: djangoapp
+  template:
+    metadata:
+      labels:
+        project: djangoapp # this label search service
+    spec:
+      containers:
+        - name  : container-djangoapp
+          image : django_app:latest
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8080
+          env:
+            - name: DEBUG
+              valueFrom:
+                configMapKeyRef:
+                  name: env-config
+                  key: DEBUG
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name : deployment-service
+  labels:
+    env   : prod
+    owner : Aleksei_Ushakov
+spec:
+  selector  :
+    project : djangoapp # select PODs with this labels
+  ports:
+    - name       : app-listener
+      protocol   : TCP
+      port       : 8080 # port on LoadBalancer
+      targetPort : 80 # port on POD
+  type: LoadBalancer

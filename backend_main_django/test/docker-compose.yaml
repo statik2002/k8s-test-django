@@ -1,0 +1,27 @@
+version: "3"
+
+services:
+  db:
+    image: postgres:12.0-alpine
+    volumes:
+      - /var/lib/docker/volumes/k8s-test-django_db_data/_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB-test_k8s}
+      POSTGRES_USER: ${POSTGRES_USER-test_k8s}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD-OwOtBep9Frut}
+    ports:
+      - "5444:5432"
+    networks:
+      bridge_db:
+        ipv4_address: 172.10.1.20
+
+volumes:
+  db_data:
+
+networks:
+  bridge_db:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.10.1.0/24
+          gateway: 172.10.1.1
