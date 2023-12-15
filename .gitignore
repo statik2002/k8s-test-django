@@ -4,3 +4,4 @@ __pycache__/
 *$py.class
 env.yaml
 .env
+/backend_main_django/test
