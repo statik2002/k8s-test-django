@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Pod
+metadata:
+ name: djangoapp
+ namespace: default
+spec:
+ containers:
+ - name: main-django
+   image: my_django_app3:latest
+   imagePullPolicy: IfNotPresent
+ restartPolicy: Never

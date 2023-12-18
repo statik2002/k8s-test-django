@@ -52,6 +52,13 @@ kubectl edit configmap env-config
 kubectl rollout restart deployment/djangoapp-deployment
 ```
 
+Необходимо установить Ingress контроллер, например по [ссылке](https://github.com/projectcontour/contour)
+
+Для запуска кластера используем команду:
+```commandline
+kubectl apply -f django_app.yaml
+```
+
 ### Запуск Deployment
 
 ### Тырк тырк

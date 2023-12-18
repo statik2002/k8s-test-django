@@ -5,3 +5,4 @@ __pycache__/
 env.yaml
 .env
 /backend_main_django/test
+/backend_main_django/.env
