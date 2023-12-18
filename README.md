@@ -58,10 +58,11 @@ kubectl rollout restart deployment/djangoapp-deployment
 В файле `network.yaml` - Настройки Ingress
 В файле `services.yaml` - Настройки сервисов
 В файле `cronjobs.yaml` - Настройки CronJob
+В файле `jobs.yaml` - настройки Job
 
 Для запуска кластера используем команду:
 ```commandline
-kubectl apply -f django_app.yaml -f network.yaml -f services.yaml -f cronjobs.yaml
+kubectl apply -f django_app.yaml -f network.yaml -f services.yaml -f cronjobs.yaml -f jobs.yaml
 ```
 
 Для доступа к сайту используем IP адрес который можно узнать командой `kubectl get svc` 

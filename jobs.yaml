@@ -1,0 +1,22 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: job-migrate
+spec:
+  template:
+    spec:
+      containers:
+        - name: django-migrate
+          image: django_app:latest
+          command: [ "python" ]
+          args: [ "manage.py", "migrate" ]
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8080
+          env:
+            - name: DEBUG
+              valueFrom:
+                configMapKeyRef:
+                  name: env-config
+                  key: DEBUG
+      restartPolicy: Never
