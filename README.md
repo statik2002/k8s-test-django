@@ -54,10 +54,17 @@ kubectl rollout restart deployment/djangoapp-deployment
 
 Необходимо установить Ingress контроллер, например по [ссылке](https://github.com/projectcontour/contour)
 
+В фйле `django_app.yaml` - настройки подов
+В файле `network.yaml` - Настройки Ingress
+В файле `services.yaml` - Настройки сервисов
+В файле `cronjobs.yaml` - Настройки CronJob
+
 Для запуска кластера используем команду:
 ```commandline
-kubectl apply -f django_app.yaml
+kubectl apply -f django_app.yaml -f network.yaml -f services.yaml -f cronjobs.yaml
 ```
+
+Для доступа к сайту используем IP адрес который можно узнать командой `kubectl get svc` 
 
 ### Запуск Deployment
 
