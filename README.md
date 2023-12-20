@@ -81,6 +81,11 @@ image.
 helm install djangoapp Chart-djangoapp/
 ```
 
+При первом деплое необходимо создать суперюзера командой:
+```commandline
+kubectl exec -it djnangoapp -- python manage.py createsuperuser
+```
+
 ### 5. Для доступа к сайту по домену используем IP адрес сервиса
 Данный ip c приложением который можно узнать командой `kubectl get svc` 
 и вносим этот IP в hosts
