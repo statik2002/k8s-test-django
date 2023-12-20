@@ -1,0 +1,34 @@
+apiVersion : apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-deployment
+  labels:
+    app   : {{ .Release.Name }}-deployment
+    owner : Aleksei_Ushakov
+spec:
+  selector:
+    matchLabels:
+      project: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        project: {{ .Release.Name }} # this label search service
+    spec:
+      containers:
+        - name  : {{ .Release.Name }}
+          image : {{ .Values.container.image }}
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8080
+          env:
+            - name: DEBUG
+              valueFrom:
+                configMapKeyRef:
+                  name: env-config
+                  key: DEBUG
+            - name: DATABASE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: env-config
+                  key: DATABASE_URL
+

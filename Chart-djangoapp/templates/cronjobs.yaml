@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: job-clearsession
+  name: {{ .Release.Name }}-clearsession
 spec:
   startingDeadlineSeconds: 40
   schedule: "0 0 1 * 0"
@@ -10,8 +10,8 @@ spec:
       template:
         spec:
           containers:
-            - name: django-clearsessions
-              image: django_app:latest
+            - name: {{ .Release.Name }}-clearsessions
+              image: {{ .Values.container.image }}
               command: [ "python" ]
               args: [ "manage.py", "clearsessions" ]
               imagePullPolicy: Never

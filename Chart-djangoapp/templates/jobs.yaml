@@ -1,13 +1,13 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: job-migrate
+  name: {{ .Release.Name }}-migrate
 spec:
   template:
     spec:
       containers:
-        - name: django-migrate
-          image: django_app:latest
+        - name: {{ .Release.Name }}-migrate
+          image: {{ .Values.container.image }}
           command: [ "python" ]
           args: [ "manage.py", "migrate" ]
           imagePullPolicy: Never
@@ -19,4 +19,9 @@ spec:
                 configMapKeyRef:
                   name: env-config
                   key: DEBUG
+            - name: DATABASE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: env-config
+                  key: DATABASE_URL
       restartPolicy: Never

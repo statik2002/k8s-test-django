@@ -10,7 +10,7 @@ services:
       POSTGRES_USER: ${POSTGRES_USER-test_k8s}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD-OwOtBep9Frut}
     ports:
-      - "5445:5432"
+      - "5432:5432"
     #networks:
     #  bridge:
     #    ipv4_address: 172.10.1.22

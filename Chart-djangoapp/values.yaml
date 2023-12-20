@@ -1,0 +1,2 @@
+container:
+  image: django_app:latest

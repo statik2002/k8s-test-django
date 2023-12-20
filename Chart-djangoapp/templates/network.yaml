@@ -1,8 +1,8 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: ingress-hosts
-
+  name: {{ .Release.Name }}-ingress
+  namespace:
 spec:
   ingressClassName: ingress-router
   rules:
@@ -13,6 +13,6 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: djangoapp
+            name: {{ .Release.Name }}
             port:
               number: 8080

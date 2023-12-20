@@ -34,7 +34,20 @@ $ docker-compose run web ./manage.py createsuperuser
 
 ## Запуск приложения в Kubernetes
 
-## Устанавливаем переменные окружения
+### 1. Подготовка к развертыванию в Kubernetes
+Необходимо установить:
+1. Для локальной разработки устанавливаем [Minikube ](https://minikube.sigs.k8s.io/docs/)
+2. Helm [инструкция по установке](https://helm.sh/)
+3. Ingress контроллер, например по [ссылке](https://github.com/projectcontour/contour)
+
+### 1. Билдим образ приложения в minikube
+
+Выполняем команду:
+```commandline
+minikube image build backend_main_django/ . -t django_app
+```
+
+### 2. Устанавливаем переменные окружения
 
 Для создания переменных окружения в Kubernetes, используем `configMap`
 Перенесем из `.env` переменные в `configMap` командой:
@@ -47,27 +60,29 @@ kubectl create configmap env-config --from-env-file=.env
 kubectl edit configmap env-config
 ```
 
-После изменения переменных `configMap` необходимо запустить обновление Deployment командой:
+### 3. Настройка и запуск БД
+Сначала устанавливаем БД Postgresql c помощью команды
 ```commandline
-kubectl rollout restart deployment/djangoapp-deployment
+helm install djangoappdb oci://registry-1.docker.io/bitnamicharts/postgresql
+ --set global.postgresql.postgresqlUsername=[имя пользователя как в .env]
+ --set global.postgresql.postgresqlPassword=[пароль как в .env] 
+ --set global.postgresql.postgresqlDatabase=[Название POD`а]
 ```
 
-Необходимо установить Ingress контроллер, например по [ссылке](https://github.com/projectcontour/contour)
+Далее смотрим название сервиса с postgresql командой `kubectl get svc`, вносим название сервиса Postgresql в configMap
+в переменную `DATABASE_URL`
 
-В фйле `django_app.yaml` - настройки подов
-В файле `network.yaml` - Настройки Ingress
-В файле `services.yaml` - Настройки сервисов
-В файле `cronjobs.yaml` - Настройки CronJob
-В файле `jobs.yaml` - настройки Job
+### 4. Запускаем приложение командой: 
 
-Для запуска кластера используем команду:
+Файл `Chart-djangoapp/values.yaml` содержит переменные для запуска приложения в Helm. Сейчас только название
+image.
+
 ```commandline
-kubectl apply -f django_app.yaml -f network.yaml -f services.yaml -f cronjobs.yaml -f jobs.yaml
+helm install djangoapp Chart-djangoapp/
 ```
 
-Для доступа к сайту используем IP адрес который можно узнать командой `kubectl get svc` 
+### 5. Для доступа к сайту по домену используем IP адрес сервиса
+Данный ip c приложением который можно узнать командой `kubectl get svc` 
+и вносим этот IP в hosts
 
-### Запуск Deployment
-
-### Тырк тырк
 
