@@ -1,2 +1,1 @@
-container:
-  image: django_app:latest
+containerImage: "django_app:latest"

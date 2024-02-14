@@ -28,7 +28,7 @@ spec:
                   key: DEBUG
             - name: DATABASE_URL
               valueFrom:
-                configMapKeyRef:
+                secretKeyRef:
                   name: env-config
                   key: DATABASE_URL
 

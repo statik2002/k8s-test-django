@@ -49,15 +49,24 @@ minikube image build backend_main_django/ . -t django_app
 
 ### 2. Устанавливаем переменные окружения
 
-Для создания переменных окружения в Kubernetes, используем `configMap`
-Перенесем из `.env` переменные в `configMap` командой:
+Для создания переменных окружения  с настройками в Kubernetes, используем `configMap` 
+(для хранения секретных данных будем использовать Secrets, инструкция ниже).
 ```commandline
-kubectl create configmap env-config --from-env-file=.env
+kubectl create configmap env-config 
+    --from-literal=DEBUG=True
+    --from-literal=ALLOWED_HOSTS=''
 ```
 
 Для изменения данного `configMap` используем команду:
 ```commandline
 kubectl edit configmap env-config
+```
+
+Для хранения секретных данных таких как DATABASE_URL, воспользуемся Secrets. Значения секретных данных берем из файла `.env` 
+
+```commandline
+kubectl create secret generic env-config 
+    --from-literal=DATABASE_URL=''
 ```
 
 ### 3. Настройка и запуск БД
