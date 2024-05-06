@@ -100,3 +100,7 @@ kubectl exec -it djnangoapp -- python manage.py createsuperuser
 и вносим этот IP в hosts
 
 
+### 6. Как задеплоить код в кластер 
+
+В директории `deploy/yc-sirius/edu-desperate-sinuossi` лежат файлы настроек для PODа и Service
+
