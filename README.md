@@ -69,6 +69,11 @@ kubectl create secret generic env-config
     --from-literal=DATABASE_URL=''
 ```
 
+Создаем Secret c ssl сертификатом:
+```commandline
+kubectl create secret generic postgresql-ssl --from-file=root.crt
+```
+
 ### 3. Настройка и запуск БД
 Сначала устанавливаем БД Postgresql c помощью команды
 ```commandline

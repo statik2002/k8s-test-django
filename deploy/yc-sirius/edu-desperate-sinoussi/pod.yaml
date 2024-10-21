@@ -155,6 +155,9 @@ spec:
                     apiVersion: v1
                     fieldPath: metadata.namespace
         defaultMode: 420
+    - name: ssl-secret
+      secret:
+        secretName: postgresql-ssl
   containers:
     - name: nginx
       image: nginx:1.14.2
@@ -162,10 +165,17 @@ spec:
         - containerPort: 80
           protocol: TCP
       resources: {}
+      command:
+        - ls
+        - "-l"
+        - "/etc/secret-volume"
       volumeMounts:
         - name: kube-api-access-vm5k5
           readOnly: true
           mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        - name: ssl-secret
+          readOnly: true
+          mountPath: "/etc/secret-volume"
       terminationMessagePath: /dev/termination-log
       terminationMessagePolicy: File
       imagePullPolicy: IfNotPresent
